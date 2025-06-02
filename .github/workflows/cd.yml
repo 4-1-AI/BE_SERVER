@@ -44,4 +44,3 @@ jobs:
             docker rmi ${{ secrets.DOCKER_USERNAME }}/carefire:latest
             docker pull ${{ secrets.DOCKER_USERNAME }}/carefire:latest
             docker compose up -d
-
