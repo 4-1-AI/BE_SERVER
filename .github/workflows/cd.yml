@@ -30,7 +30,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/carefire:latest
 
       # 4. ec2 pull
-      - name: Deploy to server
+      - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -39,8 +39,12 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker system prune -a -f
-            docker compose down
-            docker rmi ${{ secrets.DOCKER_USERNAME }}/carefire:latest
+            docker rm -f carefire || true
             docker pull ${{ secrets.DOCKER_USERNAME }}/carefire:latest
-            docker compose up -d
+            docker run -d \
+                --name carefire \
+              -p 8080:8080 \
+              -e SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.DATABASE_HOST}}:${{ secrets.DATABASE_PORT}}/${{ secrets.DATABASE_NAME}} \
+              -e SPRING_DATASOURCE_USERNAME=${{ secrets.DATABASE_USERNAME}} \
+              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DATABASE_PASSWORD}} \
+              ${{ secrets.DOCKER_USERNAME }}/carefire:latest
