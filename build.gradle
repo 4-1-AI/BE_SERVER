@@ -18,9 +18,28 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        runtimeOnly 'com.mysql:mysql-connector-j'
+
+        // HTTP Client (for WebClient, 외부 API 요청 등)
+        implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.1'
+
+        // SMS SDK
+        implementation 'net.nurigo:sdk:4.2.7'
+
+        // Test
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
 }
 
 tasks.named('test') {
