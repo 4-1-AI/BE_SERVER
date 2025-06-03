@@ -39,6 +39,9 @@ dependencies {
         // Test
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+        //websocket
+        implementation 'org.springframework.boot:spring-boot-starter-websocket'//웹소켓을 사용하기 위한 라이브러리
     }
 }
 
