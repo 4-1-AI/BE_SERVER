@@ -31,4 +31,10 @@ public class UserController {
         User user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
         return "로그인 성공! 사용자: " + user.getNickname();
     }
+
+
+    @GetMapping("/{id}")
+    public User getUserProfile(@PathVariable Long id) {
+        return userService.getUserProfile(id);
+    }
 }
