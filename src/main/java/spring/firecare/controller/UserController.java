@@ -1,6 +1,7 @@
 package spring.firecare.controller;
 
 import org.springframework.web.bind.annotation.*;
+import spring.firecare.dto.UserResponseDTO;
 import spring.firecare.entity.User;
 import spring.firecare.dto.LoginRequest;
 import spring.firecare.service.UserService;
@@ -34,7 +35,7 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public User getUserProfile(@PathVariable Long id) {
+    public UserResponseDTO getUserProfile(@PathVariable Long id) {
         return userService.getUserProfile(id);
     }
 }
