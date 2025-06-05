@@ -15,10 +15,10 @@ public class UserService {
     }
 
     public User register(User user) {
-        userRepository.findByEmail(user.getEmail())
-                .ifPresent(u -> {
-                    throw new IllegalStateException("이미 가입된 이메일입니다.");
-                });
+        // 이메일 중복 체크
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 가입된 이메일입니다.");
+        }
         return userRepository.save(user);
     }
 
@@ -26,13 +26,15 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        if (updatedUser.getEmail() != null) {
+        if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
             user.setEmail(updatedUser.getEmail());
         }
-        if (updatedUser.getPassword() != null) {
+
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             user.setPassword(updatedUser.getPassword());
         }
-        if (updatedUser.getNickname() != null) {
+
+        if (updatedUser.getNickname() != null && !updatedUser.getNickname().isEmpty()) {
             user.setNickname(updatedUser.getNickname());
         }
 
@@ -45,7 +47,7 @@ public class UserService {
 
     public User login(String email, String password) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("이메일이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 이메일입니다."));
 
         if (!user.getPassword().equals(password)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
