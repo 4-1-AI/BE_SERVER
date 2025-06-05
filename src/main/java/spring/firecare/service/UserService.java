@@ -46,7 +46,7 @@ public class UserService {
         return user;
     }
 
-    public User login(String email, String password) {
+    public UserResponseDTO login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 이메일입니다."));
 
@@ -54,7 +54,13 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        return user;
+        return new UserResponseDTO(
+                user.getId(),
+                user.getEmail(),
+                user.getPassword(), // password 추가
+                user.getNickname(),
+                user.getGuardians()
+        );
     }
 
     public UserResponseDTO getUserProfile(Long id) {
@@ -63,6 +69,7 @@ public class UserService {
         return new UserResponseDTO(
                 user.getId(),
                 user.getEmail(),
+                user.getPassword(), // password 추가
                 user.getNickname(),
                 user.getGuardians()
         );
