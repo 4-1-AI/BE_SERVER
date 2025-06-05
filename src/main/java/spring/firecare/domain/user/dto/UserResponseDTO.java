@@ -1,8 +1,8 @@
-package spring.firecare.dto;
+package spring.firecare.domain.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import spring.firecare.entity.Guardian;
+import spring.firecare.domain.user.entity.Guardian;
 
 import java.util.List;
 

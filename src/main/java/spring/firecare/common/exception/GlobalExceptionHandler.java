@@ -1,10 +1,10 @@
-package spring.firecare.exception;
+package spring.firecare.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import spring.firecare.dto.ErrorResponse;
+import spring.firecare.domain.user.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

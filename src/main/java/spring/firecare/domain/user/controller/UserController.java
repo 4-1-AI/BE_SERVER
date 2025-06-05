@@ -1,10 +1,10 @@
-package spring.firecare.controller;
+package spring.firecare.domain.user.controller;
 
 import org.springframework.web.bind.annotation.*;
-import spring.firecare.dto.UserResponseDTO;
-import spring.firecare.entity.User;
-import spring.firecare.dto.LoginRequest;
-import spring.firecare.service.UserService;
+import spring.firecare.domain.user.dto.UserResponseDTO;
+import spring.firecare.domain.user.entity.User;
+import spring.firecare.domain.user.dto.LoginRequest;
+import spring.firecare.domain.user.service.UserService;
 
 @RestController
 @RequestMapping("/users")

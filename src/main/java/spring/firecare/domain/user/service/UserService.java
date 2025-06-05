@@ -1,10 +1,10 @@
-package spring.firecare.service;
+package spring.firecare.domain.user.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import spring.firecare.dto.UserResponseDTO;
-import spring.firecare.entity.User;
-import spring.firecare.repository.UserRepository;
+import spring.firecare.domain.user.dto.UserResponseDTO;
+import spring.firecare.domain.user.entity.User;
+import spring.firecare.domain.user.repository.UserRepository;
 
 @Service
 @Transactional
