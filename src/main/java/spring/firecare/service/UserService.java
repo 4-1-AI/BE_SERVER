@@ -2,6 +2,7 @@ package spring.firecare.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import spring.firecare.dto.UserResponseDTO;
 import spring.firecare.entity.User;
 import spring.firecare.repository.UserRepository;
 
@@ -56,8 +57,14 @@ public class UserService {
         return user;
     }
 
-    public User getUserProfile(Long id) {
-        return userRepository.findById(id)
+    public UserResponseDTO getUserProfile(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        return new UserResponseDTO(
+                user.getId(),
+                user.getEmail(),
+                user.getNickname(),
+                user.getGuardians()
+        );
     }
 }
