@@ -28,11 +28,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        User user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        return "로그인 성공! 사용자: " + user.getNickname();
+    public UserResponseDTO login(@RequestBody LoginRequest loginRequest) {
+        return userService.login(loginRequest.getEmail(), loginRequest.getPassword());
     }
-
 
     @GetMapping("/{id}")
     public UserResponseDTO getUserProfile(@PathVariable Long id) {
