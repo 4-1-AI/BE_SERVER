@@ -1,4 +1,4 @@
-package spring.firecare.entity;
+package spring.firecare.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

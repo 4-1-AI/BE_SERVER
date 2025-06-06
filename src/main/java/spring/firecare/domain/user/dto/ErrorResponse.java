@@ -1,4 +1,4 @@
-package spring.firecare.dto;
+package spring.firecare.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
