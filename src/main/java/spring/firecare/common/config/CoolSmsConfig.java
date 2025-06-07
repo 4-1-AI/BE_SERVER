@@ -10,12 +10,13 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class CoolSmsConfig {
 
-    @Value("${SMS_APIKEY}")
+    @Value("${sms.apikey}")
     private String apiKey;
 
-    @Value("${SMS_SECRETKEY}")
+    @Value("${sms.secretkey}")
     private String apiSecret;
 
-    @Value("${SMS_ADMINPHONE}")
+    @Value("${sms.adminphone}")
     private String senderPhone;
+
 }

@@ -47,4 +47,7 @@ jobs:
               -e SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.DATABASE_HOST}}:${{ secrets.DATABASE_PORT}}/${{ secrets.DATABASE_NAME}} \
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.DATABASE_USERNAME}} \
               -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DATABASE_PASSWORD}} \
+              -e SMS_APIKEY=${{ secrets.SMS_APIKEY }} \
+              -e SMS_SECRETKEY=${{ secrets.SMS_SECRETKEY }} \
+              -e SMS_ADMINPHONE=${{ secrets.SMS_ADMINPHONE }} \
               ${{ secrets.DOCKER_USERNAME }}/carefire:latest
