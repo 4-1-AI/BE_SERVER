@@ -16,6 +16,8 @@ import spring.firecare.domain.user.repository.UserRepository;
 
 import jakarta.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +28,50 @@ public class SmsServiceImpl implements SmsService {
     private final UserRepository userRepository;
     private DefaultMessageService messageService;
 
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
+    private final Map<Long, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
+
     @PostConstruct
     private void init() {
         this.messageService = NurigoApp.INSTANCE.initialize(
                 coolSmsConfig.getApiKey(),
                 coolSmsConfig.getApiSecret(),
                 "https://api.coolsms.co.kr");
+    }
+
+    @Override
+    public void scheduleFireCauseSms(FireCauseSmsRequestDto requestDto) {
+        Long userId = requestDto.getUserId();
+
+        // 🔹 기존 예약이 있으면 새 예약 안 함
+        if (scheduledTasks.containsKey(userId)) {
+            log.info("이미 예약된 작업이 있어 새로운 예약을 무시합니다. [userId={}]", userId);
+            return;
+        }
+
+        // 🔹 예약 없으면 새로 예약
+        ScheduledFuture<?> scheduledTask = scheduler.schedule(() -> {
+            try {
+                sendFireCauseSms(requestDto);
+            } catch (Exception e) {
+                log.error("SMS 발송 스케줄 예외 발생 [userId={}]", userId, e);
+            } finally {
+                scheduledTasks.remove(userId);
+            }
+        }, 3, TimeUnit.MINUTES);
+
+        scheduledTasks.put(userId, scheduledTask);
+        log.info("SMS 발송 예약됨 [userId={}, delay=3분]", userId);
+    }
+
+    @Override
+    public void cancelFireCauseSms(Long userId) {
+        ScheduledFuture<?> scheduledTask = scheduledTasks.get(userId);
+        if (scheduledTask != null) {
+            scheduledTask.cancel(false);
+            scheduledTasks.remove(userId);
+            log.info("SMS 발송 예약 취소됨 [userId={}]", userId);
+        }
     }
 
     @Override
