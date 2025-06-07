@@ -21,7 +21,7 @@ public class User {
     private String password;    // 비밀번호
     private String nickname;    // 닉네임
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "guardian", joinColumns = @JoinColumn(name = "user_id"))
     private List<Guardian> guardians = new ArrayList<>();
 }
