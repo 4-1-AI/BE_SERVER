@@ -26,39 +26,5 @@ jobs:
       - name: docker build and push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/carefire:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/carefire:latest
-
-      # 4. ec2 pull
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_SSH_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_KEY }}
-          script: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker rm -f carefire || true
-            docker pull ${{ secrets.DOCKER_USERNAME }}/carefire:latest
-            docker run -d \
-                --name carefire \
-              -p 8080:8080 \
-              -e SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.DATABASE_HOST}}:${{ secrets.DATABASE_PORT}}/${{ secrets.DATABASE_NAME}} \
-              -e SPRING_DATASOURCE_USERNAME=${{ secrets.DATABASE_USERNAME}} \
-              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DATABASE_PASSWORD}} \
-              -e SMS_APIKEY=${{ secrets.SMS_APIKEY }} \
-              -e SMS_SECRETKEY=${{ secrets.SMS_SECRETKEY }} \
-              -e SMS_ADMINPHONE=${{ secrets.SMS_ADMINPHONE }} \
-              ${{ secrets.DOCKER_USERNAME }}/carefire:latest
-
-      - name: Check if container is running
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_SSH_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_KEY }}
-          script: |
-            echo "컨테이너 상태 확인 중..."
-            docker ps | grep carefire || (echo "❌컨테이너가 실행되고 있지 않습니다." && exit 1)
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/be-server:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/be-server:latest
