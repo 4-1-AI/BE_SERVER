@@ -49,6 +49,7 @@ public class SmsServiceImpl implements SmsService {
             return;
         }
 
+        System.out.println("⏳주의 감지!! 타이머 시작");
         // 🔹 예약 없으면 새로 예약
         ScheduledFuture<?> scheduledTask = scheduler.schedule(() -> {
             try {
@@ -58,10 +59,10 @@ public class SmsServiceImpl implements SmsService {
             } finally {
                 scheduledTasks.remove(userId);
             }
-        }, 3, TimeUnit.MINUTES);
+        }, 10, TimeUnit.SECONDS);
 
         scheduledTasks.put(userId, scheduledTask);
-        log.info("SMS 발송 예약됨 [userId={}, delay=3분]", userId);
+        log.info("SMS 발송 예약됨 [userId={}], 원인=[{}]", userId, requestDto.getCause() );
     }
 
     @Override
@@ -76,6 +77,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public void sendFireCauseSms(FireCauseSmsRequestDto requestDto) {
+        System.out.println("🔥🔥위험감지!! 원인 즉시 전송!");
         String cause = requestDto.getCause();
         double distance = requestDto.getDistance();
         Long userId = requestDto.getUserId();
