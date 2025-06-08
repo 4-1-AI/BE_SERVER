@@ -33,4 +33,13 @@ public class SmsController {
         smsService.cancelFireCauseSms(requestDto.getUserId());
         return ResponseEntity.ok("문자 발송 예약이 취소되었습니다.");
     }
+
+    /**
+     * 화재 알림 SMS 즉시 전송
+     */
+    @PostMapping("/direct")
+    public ResponseEntity<String> sendFireCauseSmsDirect(@RequestBody FireCauseSmsRequestDto requestDto) {
+        smsService.sendFireCauseSms(requestDto);
+        return ResponseEntity.ok("보호자에게 화재 원인 SMS가 전송되었습니다.");
+    }
 }
